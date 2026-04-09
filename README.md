@@ -46,6 +46,7 @@ well right out of the gate.
     - [Via `git clone`](#via-git-clone)
 - [Model Quality and Contributing](#model-quality-and-contributing)
 - [Menagerie Models](#menagerie-models)
+- [Sesame URDF RL Audit (2026-04-09)](#sesame-urdf-rl-audit-2026-04-09)
 - [Citing Menagerie](#citing-menagerie)
 - [Acknowledgments](#acknowledgments)
 - [Changelog](#changelog)
@@ -282,6 +283,46 @@ Menagerie, see [CONTRIBUTING](CONTRIBUTING.md).
 | Name | Maker | DoFs    | License | MJX |
 |------|-------|---------|---------|-----|
 | D435i | Intel Realsense | 0 | [Apache-2.0](realsense_d435i/LICENSE) |✖️|
+
+## Sesame URDF RL Audit (2026-04-09)
+
+The Sesame URDF was checked for RL-readiness in MJLAB/MuJoCo using the Big Three checks:
+
+- Collision vs visual geometry complexity
+- Inertial mass and inertia sanity
+- Joint limits completeness and range sanity
+
+Checker script:
+
+- [sesame/check_urdf_big_three.py](sesame/check_urdf_big_three.py)
+
+URDF checked:
+
+- [sesame/Sesame.SLDASM.urdf](sesame/Sesame.SLDASM.urdf)
+
+Command used:
+
+```bash
+/bin/python3.11 sesame/check_urdf_big_three.py sesame/Sesame.SLDASM.urdf
+```
+
+Result summary:
+
+- FAIL: 9
+- WARN: 18
+- Total findings: 27
+- Exit code: 1
+
+Key findings:
+
+- Hard blocker: all 9 links use the same mesh file for both visual and collision.
+- Performance risk: collision geometry is mesh-based on all links; one collision mesh (base_link) is high poly (21594 triangles, warning threshold 5000).
+- Stability sanity: no zero or missing masses/inertias were found, but 8 links have very low masses (< 0.05 kg) that should be verified against physical hardware.
+- Joint limits: all revolute joints include lower/upper/effort/velocity and passed hard limit checks for this audit.
+
+Recommended next step:
+
+- Replace URDF collision meshes with simple primitives per link (or simplify in MJCF conversion) and rerun the checker to reach zero hard failures.
 
 ## Citing Menagerie
 
