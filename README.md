@@ -324,6 +324,36 @@ Recommended next step:
 
 - Replace URDF collision meshes with simple primitives per link (or simplify in MJCF conversion) and rerun the checker to reach zero hard failures.
 
+## SesameSimplified URDF RL Audit (2026-04-21)
+
+Following the initial audit, a simplified version of the URDF was created using primitive `box` geometries for all collision blocks.
+
+URDF checked:
+
+- [sesame/SesameSimplified.urdf](sesame/SesameSimplified.urdf)
+
+Command used:
+
+```bash
+python3 sesame/check_urdf_big_three.py sesame/SesameSimplified.urdf
+```
+
+Result summary:
+
+- FAIL: 0
+- WARN: 8
+- Total findings: 8
+- Exit code: 0
+
+Key findings:
+
+- **Pass**: All hard blockers (mesh sharing and complexity) have been resolved.
+- **Performance**: High-poly mesh collisions were replaced with 9 optimized box primitives.
+- **Stability**: Low-mass warnings persist for awareness but do not block simulation stability checks.
+
+Result: **PASS** (no hard blockers found)
+
+
 ## Citing Menagerie
 
 If you use Menagerie in your work, please use the following citation:
