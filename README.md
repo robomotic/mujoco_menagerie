@@ -284,7 +284,7 @@ Menagerie, see [CONTRIBUTING](CONTRIBUTING.md).
 |------|-------|---------|---------|-----|
 | D435i | Intel Realsense | 0 | [Apache-2.0](realsense_d435i/LICENSE) |✖️|
 
-## Sesame URDF RL Audit (2026-04-09)
+## Sesame URDF RL Audit (2026-04-21)
 
 The Sesame URDF was checked for RL-readiness in MJLAB/MuJoCo using the Big Three checks:
 
@@ -298,12 +298,12 @@ Checker script:
 
 URDF checked:
 
-- [sesame/Sesame.SLDASM.urdf](sesame/Sesame.SLDASM.urdf)
+- [sesame/Sesame.urdf](sesame/Sesame.urdf)
 
 Command used:
 
 ```bash
-/bin/python3.11 sesame/check_urdf_big_three.py sesame/Sesame.SLDASM.urdf
+python3 sesame/check_urdf_big_three.py sesame/Sesame.urdf
 ```
 
 Result summary:
